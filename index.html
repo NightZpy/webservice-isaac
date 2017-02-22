@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Clientes WebService Consult</title>
+	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+	<link href="https://cdn.datatables.net/1.10.13/css/jquery.dataTables.min.css" rel="stylesheet">
+</head>
+<body>
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-md-offset-2 col-md-8" style="background-color: rgb(179, 174, 176)">
+				<h1 class="text-center">Clientes</h1>
+				<hr>
+				<div class="row">
+					<div class="col-sm-offset-2 col-sm-8 col col-md-offset-3 col-md-6 text-center">
+						<form class="form-inline" action="process.php" method="get">
+							<div class="form-group">
+								<label for="name">Nombre</label>
+								<input type="text" class="form-control" id="name" name="name" placeholder="Nombre del nuevo cliente" required="required">
+							</div>
+							<button type="submit" class="btn btn-primary">Nuevo cliente</button>
+						</form>
+					</div>
+				</div>
+				<hr>
+				<div class="row">
+					<div class="col-sm-offset-2 col-sm-8 col col-md-offset-3 col-md-6">
+						<table id="clients-table" class="display table-responsive" cellspacing="0" width="100%">
+					        <thead>
+					            <tr>
+					            	<th>#ID</th>
+					                <th>Cliente</th>
+					                <th>Habilitado</th>
+					            </tr>
+					        </thead>
+					        <tbody>
+					        </tbody>
+					    </table>				
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script src="https://code.jquery.com/jquery-3.1.1.min.js"
+  		integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+  		crossorigin="anonymous"></script>	
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+	<script src="https://cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js"></script>
+	<script>
+		$(document).ready(function() {
+			var table = $('#clients-table').DataTable({
+				"ajax": 'clients.php',
+				"language": {
+                	"url": "//cdn.datatables.net/plug-ins/1.10.13/i18n/Spanish.json"
+            	}
+			});
+
+			$('#clients-table tbody').on( 'dblclick', 'tr', function () {
+				console.log ( table.row( this ).data()[2] )
+			    var enabled = table.row( this ).data()[2] ? 0 : 1;
+			    var params = {
+			    	disable: enabled,
+			    	id: table.row( this ).data()[0]
+			    };
+				$.get( 'process.php', params, function(data) {
+                	console.log(data);
+				});
+				table.ajax.reload();
+			} );
+
+			$("form>button").click(function(event){
+				event.preventDefault();
+				$.get( $("form").attr('action'), { name: $("#name").val() }, function(data) {
+                    console.log(data);
+				});
+				table.ajax.reload();
+			});
+		});
+	</script>
+</body>
+</html>
