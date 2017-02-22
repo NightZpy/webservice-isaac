@@ -1,8 +1,8 @@
 <?php
   $soapParameters = [];
-  $soapParameters['SecurityToken'] = "75590dda-0f7e-4424-be1c-5782e6b99283";
+  $soapParameters['SecurityToken'] = "...";
   #crear un cliente del servicio indicado por la url hacia el WSDL.
-  $soapClient = new SoapClient("http://www.rastreo.blac.com.mx/WS/WSTrack2.asmx?wsdl", $soapParameters);
+  $soapClient = new SoapClient("http://url?wsdl", $soapParameters);
 
   $soapParameters['ClientName'] = 'ADOLFO PUENTE Y ESPINOZA';
   #al crear el cliente, se crean automáticamente los métodos definidos en el WSDL.
